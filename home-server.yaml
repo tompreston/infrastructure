@@ -3,20 +3,36 @@
   hosts: raspberrypi
   remote_user: pi
   become: true
+
+  tasks:
+    - name: Install exfat driver package
+      ansible.builtin.package:
+        name: exfat-fuse
+        state: present
+
   roles:
+    - role: bertvv.samba
+    - role: geerlingguy.pip
     - role: home-assistant-ansible
     - role: nephelaiio.unifi_controller
-    - role: bertvv.samba
+
   vars:
-    # nephelaiio.unifi_controller
+    # These are needed for pip to work, because Debian still uses Python 2
+    # https://github.com/geerlingguy/ansible-role-pip/issues/25#issuecomment-600343157
+    ansible_python_interpreter: /usr/bin/python3
+    pip_package: python3-pip
+    pip_executable: pip3
+
+    # nephelaiio.unifi_controller on Raspberry Pi
     unifi_java_packages: openjdk-8-jre-headless
     unifi_java_home: /usr/lib/jvm/java-8-openjdk-armhf/jre
-    # bertvv.samba
+
+    # bertvv.samba defaults
     samba_users:
-    - name: pi
-      password: insecure
+      - name: pi
+        password: insecure
     samba_shares:
-    - name: piratecove
-      comment: 'A place for pirates to hang out'
-      write_list: pi
-      public: yes
+      - name: piratecove
+        comment: 'A place for pirates to hang out'
+        write_list: pi
+        public: yes
