@@ -4,7 +4,7 @@
   remote_user: pi
   become: true
   roles:
-    - role: home-assistant.home-assistant-ansible
+    - role: home-assistant-ansible
     - role: nephelaiio.unifi_controller
     - role: bertvv.samba
   vars:
