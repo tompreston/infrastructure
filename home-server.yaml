@@ -10,6 +10,16 @@
         name: exfat-fuse
         state: present
 
+# TODO configure fstab
+# https://docs.ansible.com/ansible/latest/collections/ansible/posix/mount_module.html
+#    - name: Mount external drivers by UUID
+#      ansible.posix.mount:
+#        path: /srv/samba/piratecove/drive1
+#        src: UUID=b3e48f45-f933-4c8e-a700-22a159ec9077
+#        fstype: xfs
+#        opts: noatime
+#        state: present
+
   roles:
     - role: bertvv.samba
     - role: geerlingguy.pip
