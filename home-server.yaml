@@ -9,16 +9,20 @@
       ansible.builtin.package:
         name: exfat-fuse
         state: present
-
-# TODO configure fstab
-# https://docs.ansible.com/ansible/latest/collections/ansible/posix/mount_module.html
-#    - name: Mount external drivers by UUID
-#      ansible.posix.mount:
-#        path: /srv/samba/piratecove/drive1
-#        src: UUID=b3e48f45-f933-4c8e-a700-22a159ec9077
-#        fstype: xfs
-#        opts: noatime
-#        state: present
+    - name: Install Btrfs programs
+      ansible.builtin.package:
+        name: btrfs-progs
+        state: present
+    - name: Install borg backup
+      ansible.builtin.package:
+        name: borgbackup
+        state: present
+    - name: Mount external drivers by UUID
+      ansible.posix.mount:
+        path: /srv/shares/piratecove/meeseeks
+        src: PARTUUID=51cd4731-719b-fe4f-8f8d-290b0dc86e9a
+        fstype: btrfs
+        state: mounted
 
   roles:
     - role: bertvv.samba
